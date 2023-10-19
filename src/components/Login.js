@@ -1,10 +1,61 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
+import { validateData } from "../utils/validation";
+import { auth } from "../utils/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const Login = () => {
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
   const [newUser, setNewUser] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const handleSubmit = () => {
-    console.log("Submitted");
+    console.log("Email: ", emailRef.current.value);
+    console.log("Password: ", passwordRef.current.value);
+    const validationMessage = validateData(
+      emailRef.current.value,
+      passwordRef.current.value
+    );
+    setErrorMessage(validationMessage);
+    if (validationMessage) return;
+    if (newUser) {
+      // Sign-Up
+      createUserWithEmailAndPassword(
+        auth,
+        emailRef.current.value,
+        passwordRef.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log("User created: ", user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + " - " + errorMessage);
+        });
+    } else {
+      //Sign-In
+      signInWithEmailAndPassword(
+        auth,
+        emailRef.current.value,
+        passwordRef.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log("User Logged In: ", user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + " - " + errorMessage);
+        });
+    }
   };
   const handleNewUser = () => {
     newUser ? setNewUser(false) : setNewUser(true);
@@ -20,12 +71,13 @@ const Login = () => {
       </div>
       <form
         className="absolute mx-auto right-0 left-0 w-3/12 p-12 my-36 bg-black bg-opacity-80 text-white"
-        onSubmit={handleSubmit}
+        onSubmit={(e) => e.preventDefault()}
       >
         <h1 className="text-white text-3xl my-5">
           Sign {newUser ? "Up" : "In"}
         </h1>
         <input
+          ref={emailRef}
           className="w-full p-4 my-4 rounded-md bg-[#333333]"
           type="text"
           placeholder="Email or phone number"
@@ -38,11 +90,17 @@ const Login = () => {
           />
         )}
         <input
+          ref={passwordRef}
           className="w-full p-4 my-4 rounded-md bg-[#333333]"
           type="password"
           placeholder="Password"
         />
-        <button className="w-full p-4 my-4 bg-[#E50914] text-white rounded-md">
+        <p className="text-red-600 font-medium">{errorMessage}</p>
+        <button
+          type="button"
+          className="w-full p-4 my-4 bg-[#E50914] text-white rounded-md"
+          onClick={handleSubmit}
+        >
           Sign {newUser ? "Up" : "In"}
         </button>
         <p className="text-gray-500">
