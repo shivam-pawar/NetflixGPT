@@ -5,13 +5,18 @@ import { auth } from "../utils/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../slices/userSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const fullNameRef = useRef(null);
   const [newUser, setNewUser] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const handleSubmit = () => {
@@ -34,7 +39,20 @@ const Login = () => {
           // Signed up
           const user = userCredential.user;
           console.log("User created: ", user);
-          navigate("/browse");
+          updateProfile(auth.currentUser, {
+            displayName: fullNameRef.current.value,
+            photoURL: "https://avatars.githubusercontent.com/shivam-pawar",
+          })
+            .then(() => {
+              const { displayName, email, uid, photoURL } = auth.currentUser;
+              dispatch(addUser({ displayName, email, uid, photoURL }));
+              navigate("/browse");
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              setErrorMessage(errorCode + " - " + errorMessage);
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -88,6 +106,7 @@ const Login = () => {
         />
         {newUser && (
           <input
+            ref={fullNameRef}
             className="w-full p-4 my-4 rounded-md bg-[#333333]"
             type="text"
             placeholder="Full Name"
