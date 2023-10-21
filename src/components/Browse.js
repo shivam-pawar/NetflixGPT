@@ -1,11 +1,12 @@
 import React from "react";
+import useNowPlayingMovies from "../hooks/useNowPlayingMovies";
+import LandingScreen from "./LandingScreen";
 
 const Browse = () => {
+  useNowPlayingMovies();
   return (
     <div>
-      <div>
-        <h1>Browse</h1>
-      </div>
+      <LandingScreen />
     </div>
   );
 };
