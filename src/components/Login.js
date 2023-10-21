@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import Header from "./Header";
 import { validateData } from "../utils/validation";
 import { auth } from "../utils/firebase";
 import {
@@ -7,21 +6,18 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../slices/userSlice";
+import { BG_IMG, DEFAULT_AVATAR } from "../utils/appConstants";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const fullNameRef = useRef(null);
   const [newUser, setNewUser] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const handleSubmit = () => {
-    console.log("Email: ", emailRef.current.value);
-    console.log("Password: ", passwordRef.current.value);
     const validationMessage = validateData(
       emailRef.current.value,
       passwordRef.current.value
@@ -37,16 +33,13 @@ const Login = () => {
       )
         .then((userCredential) => {
           // Signed up
-          const user = userCredential.user;
-          console.log("User created: ", user);
           updateProfile(auth.currentUser, {
             displayName: fullNameRef.current.value,
-            photoURL: "https://avatars.githubusercontent.com/shivam-pawar",
+            photoURL: DEFAULT_AVATAR,
           })
             .then(() => {
               const { displayName, email, uid, photoURL } = auth.currentUser;
               dispatch(addUser({ displayName, email, uid, photoURL }));
-              navigate("/browse");
             })
             .catch((error) => {
               const errorCode = error.code;
@@ -68,9 +61,6 @@ const Login = () => {
       )
         .then((userCredential) => {
           // Signed in
-          const user = userCredential.user;
-          console.log("User Logged In: ", user);
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -84,12 +74,8 @@ const Login = () => {
   };
   return (
     <div>
-      <Header />
       <div className="absolute">
-        <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/ab180a27-b661-44d7-a6d9-940cb32f2f4a/7fb62e44-31fd-4e1f-b6ad-0b5c8c2a20ef/IN-en-20231009-popsignuptwoweeks-perspective_alpha_website_large.jpg"
-          alt="bg"
-        />
+        <img src={BG_IMG} alt="bg" />
       </div>
       <form
         className="absolute mx-auto right-0 left-0 w-3/12 p-12 my-36 bg-black bg-opacity-80 text-white"
