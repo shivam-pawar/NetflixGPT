@@ -2,6 +2,7 @@ import React from "react";
 import PreviewVideoTitle from "./PreviewVideoTitle";
 import PreviewVideo from "./PreviewVideo";
 import { useSelector } from "react-redux";
+import MoviesListContainer from "./MoviesListContainer";
 
 const LandingScreen = () => {
   const movieId = useSelector((state) => state.movies?.previewMovie);
@@ -10,6 +11,7 @@ const LandingScreen = () => {
     <div>
       <PreviewVideoTitle />
       <PreviewVideo movieId={movieId?.id} />
+      <MoviesListContainer />
     </div>
   );
 };
