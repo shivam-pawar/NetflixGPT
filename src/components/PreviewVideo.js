@@ -23,8 +23,7 @@ const PreviewVideo = ({ movieId }) => {
     <div className="w-full">
       <iframe
         className="w-full aspect-video"
-        src={`https://www.youtube.com/embed/${trailer?.key}?showinfo=0&autoplay=1&mute=1&loop=1&controls=0`}
-        frameBorder="0"
+        src={`https://www.youtube.com/embed/${trailer?.key}?showinfo=0&autoplay=1&mute=1&loop=1&controls=0&playsinline=1`}
         allow="accelerometer; autoplay;"
         allowFullScreen
       ></iframe>
