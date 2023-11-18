@@ -6,10 +6,16 @@ const PreviewVideoTitle = () => {
   if (!previewMovie) return;
   return (
     <div className="w-full aspect-video absolute text-white pt-[22%] px-10 bg-gradient-to-r from-black opacity-50">
-      <h1 className="font-bold text-6xl">{previewMovie?.original_title}</h1>
-      <p className="pt-4 w-2/5">{previewMovie?.overview}</p>
-      <div className="w-full flex mt-5">
-        <button className="bg-white text-lg text-black rounded-lg  w-32 p-4 my-8 flex flex-row hover:bg-opacity-70">
+      <h1 className="font-bold text-4xl md:text-6xl">
+        {previewMovie?.original_title}
+      </h1>
+      <p className="pt-4 md:w-2/5 w-full">
+        {/Mobi|Android/i.test(navigator.userAgent)
+          ? previewMovie?.overview.slice(0, 100)
+          : previewMovie?.overview}
+      </p>
+      <div className="hidden w-full md:flex mt-5">
+        <button className="bg-slate-300 text-lg text-black rounded-lg  w-32 p-4 my-8 flex flex-row hover:bg-white">
           <img
             width="45"
             height="45"

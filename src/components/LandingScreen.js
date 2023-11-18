@@ -8,7 +8,7 @@ const LandingScreen = () => {
   const movieId = useSelector((state) => state.movies?.previewMovie);
   if (!movieId) return;
   return (
-    <div>
+    <div className="pt-[40%] md:pt-0">
       <PreviewVideoTitle />
       <PreviewVideo movieId={movieId?.id} />
       <MoviesListContainer />

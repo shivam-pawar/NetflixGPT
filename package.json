@@ -4,12 +4,13 @@
   "description": "",
   "source": "src/index.js",
   "scripts": {
-    "start": "parcel src/index.html",
+    "start": "parcel src/index.html --https",
     "build": "parcel build src/index.html"
   },
   "author": "Shivam Pawar",
   "license": "ISC",
   "devDependencies": {
+    "buffer": "^6.0.3",
     "parcel": "^2.10.0",
     "postcss": "^8.4.31",
     "process": "^0.11.10"
@@ -17,6 +18,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "firebase": "^10.5.0",
+    "openai": "^4.19.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.3",

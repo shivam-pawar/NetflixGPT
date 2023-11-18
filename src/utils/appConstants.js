@@ -1,14 +1,14 @@
 export const LOGO = "https://www.freepnglogos.com/uploads/netflix-logo-0.png";
 export const BG_IMG =
-  "https://assets.nflxext.com/ffe/siteui/vlv3/ab180a27-b661-44d7-a6d9-940cb32f2f4a/7fb62e44-31fd-4e1f-b6ad-0b5c8c2a20ef/IN-en-20231009-popsignuptwoweeks-perspective_alpha_website_large.jpg";
+  "https://assets.nflxext.com/ffe/siteui/vlv3/a09bb938-2d90-42ae-986e-5a3e4abf9e77/8eb1e781-3494-4aa4-9405-268ca6473e4c/IN-en-20231113-popsignuptwoweeks-perspective_alpha_website_large.jpg";
 export const DEFAULT_AVATAR =
   "https://avatars.githubusercontent.com/shivam-pawar";
 export const API_OPTIONS = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxZGI5N2ZlOTA0NTYxM2RiNmFjMDI0Y2QxMzE5M2ExMCIsInN1YiI6IjY1MzM3ZTIyOTFmMGVhMDExYjNiOGNiYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wE0kaVgEAgsRShQU_7zt7C4C1a22B7MFOycdHEB5yqs",
+    Authorization: "Bearer " + process.env.REACT_APP_TMDB_KEY,
   },
 };
 export const IMG_CDN_URL = "https://image.tmdb.org/t/p/w500";
+export const OPEN_API_SECRET = process.env.REACT_APP_OPENAI_KEY;

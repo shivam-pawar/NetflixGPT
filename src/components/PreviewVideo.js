@@ -15,7 +15,6 @@ const PreviewVideo = ({ movieId }) => {
     );
     const json = await data.json();
     const mainTrailer = json.results.find((e) => e.type === "Trailer");
-    console.log(mainTrailer);
     setTrailer(mainTrailer);
   };
 

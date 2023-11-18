@@ -6,9 +6,11 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../slices/userSlice";
 import { BG_IMG, DEFAULT_AVATAR } from "../utils/appConstants";
+import { setShowLoader } from "../slices/userSettingsSlice";
+import Loader from "./Loader";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,7 @@ const Login = () => {
   const fullNameRef = useRef(null);
   const [newUser, setNewUser] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const showLoader = useSelector((state) => state.userSettings.showLoader);
   const handleSubmit = () => {
     const validationMessage = validateData(
       emailRef.current.value,
@@ -24,6 +27,7 @@ const Login = () => {
     );
     setErrorMessage(validationMessage);
     if (validationMessage) return;
+    dispatch(setShowLoader(true));
     if (newUser) {
       // Sign-Up
       createUserWithEmailAndPassword(
@@ -32,6 +36,7 @@ const Login = () => {
         passwordRef.current.value
       )
         .then((userCredential) => {
+          dispatch(setShowLoader(false));
           // Signed up
           updateProfile(auth.currentUser, {
             displayName: fullNameRef.current.value,
@@ -60,6 +65,7 @@ const Login = () => {
         passwordRef.current.value
       )
         .then((userCredential) => {
+          dispatch(setShowLoader(false));
           // Signed in
         })
         .catch((error) => {
@@ -74,11 +80,12 @@ const Login = () => {
   };
   return (
     <div>
+      {showLoader && <Loader />}
       <div className="absolute">
-        <img src={BG_IMG} alt="bg" />
+        <img className="h-screen object-cover w-screen" src={BG_IMG} alt="bg" />
       </div>
       <form
-        className="absolute mx-auto right-0 left-0 w-3/12 p-12 my-36 bg-black bg-opacity-80 text-white"
+        className="absolute mx-auto right-0 left-0 w-[90%] md:w-3/12 p-12 my-36 bg-black bg-opacity-80 text-white"
         onSubmit={(e) => e.preventDefault()}
       >
         <h1 className="text-white text-3xl my-5">
